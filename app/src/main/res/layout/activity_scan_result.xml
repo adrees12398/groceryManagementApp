@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_margin="@dimen/_12sdp"
+    android:layout_height="match_parent"
+    tools:context=".ScanResultActivity">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/con"
+        android:background="@color/Primary_color"
+        android:layout_height="40dp">
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:text="Scanned Barcode Result"
+            android:textSize="22sp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textStyle="bold"
+           android:layout_marginVertical="@dimen/_6sdp"
+            android:textColor="@android:color/black" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!-- Display the scanned barcode content -->
+
+    <!-- Button to return to the previous screen -->
+    <TextView
+        android:id="@+id/resultTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:text="Barcode will be displayed here"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Return"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:textColor="@android:color/white"
+        android:background="@color/Primary_color" />
+</LinearLayout>

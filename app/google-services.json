@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "786424441746",
+    "project_id": "grocessary-managment-app",
+    "storage_bucket": "grocessary-managment-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786424441746:android:bde2cd839eaf918a5daf4b",
+        "android_client_info": {
+          "package_name": "com.example.grocessarymanagmentapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiCG7Uc-htgZkZjPpPCGaAmBX8Rr7Aya0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

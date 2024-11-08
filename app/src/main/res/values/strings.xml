@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">GrocessaryManagmentApp</string>
+    <string name="welcome_to"> Welcome To \n
+       Grocery Management app\n</string>
+    <string name="name">name</string>
+    <string name="email">Email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="mobile_no">Mobile no</string>
+    <string name="login">Login \nGrocery Management app</string>
+    <string name="sign_up_grocery_management_app">Sign Up \nGrocery Management app</string>
+    <string name="forget">Forget password \nGrocery Management App</string>
+    <string name="grocery_app">Grocery App</string>
+    <string name="good_evening">Good Evening !</string>
+    <string name="osama_adrees">Osama Adrees</string>
+    <string name="discount_20_for_mutton_karahi">Discount 20% for\n Mutton Karahi !!</string>
+    <string name="buy_now">Buy now</string>
+    <string name="search_anything">Search anything</string>
+    <string name="welcome">Welcome</string>
+    <string name="categories">Categories</string>
+    <string name="mutton">mutton</string>
+    <string name="popular_products">popular products</string>
+    <string name="explore">Explore</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="add_name">Add name</string>
+    <string name="suggestion_recipe">Suggestion Recipe</string>
+    <string name="kilo_gram">Kilo gram</string>
+    <string name="liters">Liters</string>
+    <string name="liter">liter</string>
+    <string name="gallery">Gallery</string>
+    <string name="about_text">KitchenCareApp is a comprehensive kitchen management application that provides various features to streamline your cooking and food management. Our mission is to make kitchen management accessible and convenient for everyone, helping you manage your ingredients, recipes, and inventory with ease.</string>
+    <string name="contact_info">Contact Us:\nEmail: info@Grocerymanagmentapp.com\nPhone: +92 3184159975</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_new_recipe">Add New Recipe</string>
+    <string name="enter_kg">Enter Kg</string>
+    <string name="chicken">Chicken</string>
+    <string name="are_want_to_logout">Are you want to logout?</string>
+    <string name="cancel">cancel</string>
+    <string name="yes">yes</string>
+    <string name="are_you_sure_delete_this_recipe">Are you sure delete this recipe ?</string>
+    <string name="your_shopping_list">Your Shopping List</string>
+</resources>
