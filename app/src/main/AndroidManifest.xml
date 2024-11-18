@@ -12,42 +12,43 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name=".AppClass"
+        android:name="com.example.grocery.AppClass"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/projecticon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GrocessaryManagmentApp"
         tools:targetApi="31">
         <activity
-            android:name="com.example.shoppingActivity"
+            android:name="com.example.grocery.shoppingActivity"
             android:exported="false" />
         <activity
-            android:name=".ScanResultActivity"
+            android:name="com.example.grocery.ScanResultActivity"
             android:exported="false" />
         <activity
-            android:name=".ItemofRecipeShow"
+            android:name="com.example.grocery.ItemofRecipeShow"
             android:exported="false" />
         <activity
-            android:name=".HandlerActivity"
+            android:name="com.example.grocery.HandlerActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.example.grocery.HomePage"
             android:exported="false" />
         <activity
-            android:name=".HomePage"
+            android:name="com.example.grocery.ForgetPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ForgetPasswordActivity"
+            android:name="com.example.grocery.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name="com.example.grocery.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name="com.example.grocery.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

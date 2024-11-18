@@ -1,5 +1,6 @@
 package com.example.grocessarymanagmentapp.Adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,12 @@ class categoreyAdapter(
             click.invoke(position, "update")
         }
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun filterList(list: ArrayList<categoryModel>) {
+        this.arrayList = list
+        notifyDataSetChanged()
+    }
 }
 
 class viewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,5 +55,5 @@ class viewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var quantity: TextView = itemView.findViewById(R.id.weight)
     var UpdateBtn: MaterialButton = itemView.findViewById(R.id.Update)
     var barcodeBtn: ImageView = itemView.findViewById(R.id.barcdodescan)
-    var weightname:TextView = itemView.findViewById(R.id.weightname)
+    var weightname: TextView = itemView.findViewById(R.id.weightname)
 }

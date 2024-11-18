@@ -1,4 +1,4 @@
-package com.example
+package com.example.grocery
 
 import android.content.Intent
 import android.net.Uri

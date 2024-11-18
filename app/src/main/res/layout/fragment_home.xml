@@ -5,17 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.HomeFragment">
+    tools:context="com.example.grocery.HomeFragment">
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:scrollbars="none">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/congreen"
@@ -47,9 +48,9 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/osama_adrees"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -60,9 +61,9 @@
                         android:id="@+id/bell"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:visibility="gone"
                         android:contentDescription="@null"
                         android:src="@drawable/baseline_notifications_24"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,27 +80,30 @@
 
                     <ImageView
                         android:id="@+id/shoppingbtn"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_margin="@dimen/_2sdp"
-                        app:tint = "@color/white"
                         android:src="@drawable/grocerystore"
+                        app:tint="@color/white"
                         fab:layout_constraintEnd_toStartOf="@id/bell"
                         fab:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
+                        android:id="@+id/searchView"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_50sdp"
                         android:background="@drawable/search"
                         android:drawableStart="@drawable/baseline_search_24"
-                        android:hint="@string/search_anything"
-                        android:inputType="textAutoCorrect"
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:textColorHint="@color/black"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:hint="Search Here"
+                        />
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -266,6 +270,7 @@
                 android:layout_marginEnd="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:menu_fab_label="Add your items"
                 fab:menu_animationDelayPerItem="50"
                 fab:menu_backgroundColor="@android:color/transparent"
                 fab:menu_buttonSpacing="0dp"
@@ -273,7 +278,6 @@
                 fab:menu_colorPressed="@color/Primary_color"
                 fab:menu_colorRipple="#99FFFFFF"
                 fab:menu_fab_hide_animation="@anim/fab_slide_in_from_left"
-
                 fab:menu_fab_show_animation="@anim/fab_slide_in_from_right"
                 fab:menu_fab_size="normal"
                 fab:menu_icon="@drawable/fab_add"
@@ -297,6 +301,7 @@
                 fab:menu_labels_textColor="#FFFFFF"
                 fab:menu_labels_textSize="14sp"
                 fab:menu_openDirection="up"
+
                 fab:menu_shadowColor="#66000000"
                 fab:menu_shadowRadius="4dp"
                 fab:menu_shadowXOffset="1dp"

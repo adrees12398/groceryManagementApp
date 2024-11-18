@@ -1,4 +1,4 @@
-package com.example.grocessarymanagmentapp
+package com.example.grocery
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -20,11 +20,11 @@ class LoginActivity : AppCompatActivity() {
         sessionClass = SessionClass(this)
         firebaseAuth = FirebaseAuth.getInstance()
         binding.createaccount.setOnClickListener {
-            startActivity(Intent(this,SignUpActivity::class.java))
+            startActivity(Intent(this, SignUpActivity::class.java))
             finish()
         }
         binding.forgetpassword.setOnClickListener {
-            startActivity(Intent(this,ForgetPasswordActivity::class.java))
+            startActivity(Intent(this, ForgetPasswordActivity::class.java))
             finish()
         }
         binding.loginbtn.setOnClickListener {
@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
                 firebaseAuth.signInWithEmailAndPassword(email,password)
                     .addOnCompleteListener {task->
                         if (task.isSuccessful){
-                            startActivity(Intent(this,HandlerActivity::class.java))
+                            startActivity(Intent(this, HandlerActivity::class.java))
                             sessionClass.setUser("User")
                             sessionClass.setTheme(true)
                             showToast("Login Successfully")

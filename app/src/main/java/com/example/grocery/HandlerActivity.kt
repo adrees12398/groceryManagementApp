@@ -1,9 +1,10 @@
-package com.example.grocessarymanagmentapp
+package com.example.grocery
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavHost
 import androidx.navigation.ui.setupWithNavController
+import com.example.grocessarymanagmentapp.R
 import com.example.grocessarymanagmentapp.databinding.ActivityHandlerBinding
 
 class HandlerActivity : AppCompatActivity() {

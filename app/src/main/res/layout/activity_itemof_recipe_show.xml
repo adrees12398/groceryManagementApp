@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ItemofRecipeShow">
+    tools:context="com.example.grocery.ItemofRecipeShow">
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/question_textinput"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

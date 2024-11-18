@@ -1,4 +1,4 @@
-package com.example
+package com.example.grocery
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class shoppingActivity : AppCompatActivity() {
     lateinit var binding: ActivityShoppingBinding
+    private lateinit var  sessionClass: SessionClass
     private lateinit var firestore: FirebaseFirestore
     private var list = ArrayList<AutoShoppingListModel>()
     private lateinit var adapter: AutoShoppingAdapter
@@ -22,6 +23,7 @@ class shoppingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityShoppingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+       sessionClass = SessionClass(this)
         firestore = FirebaseFirestore.getInstance()
 
         adapter = AutoShoppingAdapter(this, list)
@@ -36,29 +38,31 @@ class shoppingActivity : AppCompatActivity() {
     }
 
     private fun autoCreatingShoppinglist() {
-        firestore.collection("images").get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val documents = task.result.documents
-                    documents.forEach { document ->
-                        val model = document.toObject(categoryModel::class.java)
+        sessionClass.getUId()?.let {
+            firestore.collection("images").document(it).collection("items").get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val documents = task.result.documents
+                        documents.forEach { document ->
+                            val model = document.toObject(categoryModel::class.java)
 
 
-                        if (model != null && (model.quantity?.toInt() == 0 || model.quantity?.toInt()!! < 5)) {
+                            if (model != null && (model.quantity?.toInt() == 0 || model.quantity?.toInt()!! < 5)) {
 
-                            val shoppingListModel = AutoShoppingListModel(
-                                Id = model.Id, // Assuming you have an `id` field in categoryModel
-                                Shoppingname = model.addname // Set addname to Shoppingname
-                            )
+                                val shoppingListModel = AutoShoppingListModel(
+                                    Id = model.Id, // Assuming you have an `id` field in categoryModel
+                                    Shoppingname = model.addname // Set addname to Shoppingname
+                                )
 
-                            // Add the new shopping item to the list
-                            list.add(shoppingListModel)
+                                // Add the new shopping item to the list
+                                list.add(shoppingListModel)
+                            }
                         }
-                    }
 
-                    // Notify adapter after data is updated
-                    adapter.notifyDataSetChanged()
+                        // Notify adapter after data is updated
+                        adapter.notifyDataSetChanged()
+                    }
                 }
-            }
+        }
     }
 }

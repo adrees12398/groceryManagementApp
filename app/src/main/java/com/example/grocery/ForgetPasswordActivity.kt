@@ -1,4 +1,4 @@
-package com.example.grocessarymanagmentapp
+package com.example.grocery
 
 import android.os.Bundle
 import android.widget.Toast

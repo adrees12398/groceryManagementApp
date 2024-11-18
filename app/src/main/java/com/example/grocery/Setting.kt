@@ -13,12 +13,14 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.grocery.SessionClass
+import com.example.grocery.LoginActivity
+import com.example.grocery.ScanResultActivity
 import com.example.grocessarymanagmentapp.databinding.FragmentSettingBinding
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
-import kotlin.concurrent.thread
 
 class Setting : Fragment() {
 
@@ -57,6 +59,7 @@ class Setting : Fragment() {
         }
 
         binding.switcher.setOnCheckedChangeListener { compoundButton, ischecked ->
+            binding.textscanner4.setText("Switch on")
             if (ischecked) {
 
                 binding.textscanner4.setText("Switch On")

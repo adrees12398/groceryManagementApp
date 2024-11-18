@@ -1,4 +1,4 @@
-package com.example
+package com.example.grocery
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -12,12 +12,16 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.media.Image
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -40,10 +44,10 @@ import com.denzcoskun.imageslider.models.SlideModel
 import com.example.grocessarymanagmentapp.Adapters.SuggestionRecipe
 import com.example.grocessarymanagmentapp.Adapters.categoreyAdapter
 import com.example.grocessarymanagmentapp.R
-import com.example.grocessarymanagmentapp.ScanResultActivity
 import com.example.grocessarymanagmentapp.databinding.FragmentHomeBinding
 import com.example.grocessarymanagmentapp.models.RecipeModel
 import com.example.grocessarymanagmentapp.models.categoryModel
+import com.example.models.namemodel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
@@ -54,11 +58,6 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
 import java.io.File
 import java.io.FileOutputStream
 import java.util.UUID
@@ -66,7 +65,7 @@ import java.util.UUID
 
 class HomeFragment : Fragment() {
 
-    //    private val liveData:MutableLiveData<ArrayList<categoryModel>> = MutableLiveData()
+    private val sessionClass by lazy { SessionClass(requireContext()) }
     private val liveData: MutableLiveData<ArrayList<categoryModel>> = MutableLiveData()
     lateinit var binding: FragmentHomeBinding
     private lateinit var storageRef: StorageReference
@@ -92,9 +91,12 @@ class HomeFragment : Fragment() {
     private var whichChecked: String? = null
     private lateinit var fulltext: String
     private var imagescan: ImageView? = null
-
+    lateinit var namelist : ArrayList<namemodel>
     var list2 = ArrayList<RecipeModel>()
     val recipenames = ArrayList<RecipeModel>()
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -117,6 +119,7 @@ class HomeFragment : Fragment() {
 
         binding.recyclerView2.adapter = adapter1
         loadRecipeNameOnFireStore()
+
 
 
         binding.recyclerView.setHasFixedSize(true)
@@ -158,9 +161,16 @@ class HomeFragment : Fragment() {
             Log.d("shopping", "onCreateView: ")
             startActivity(Intent(requireContext(), shoppingActivity::class.java))
         }
+        binding.name.text = sessionClass.getName()
         slider()
         loadImagesFromFirestore()
         attachViewmodel()
+        setUpSearchView()
+        binding.searchView.isEnabled = true;
+        binding.searchView.requestFocus();
+        binding.searchView.clearFocus()
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.searchView.windowToken, 0)
 
         return binding.root
     }
@@ -240,7 +250,6 @@ class HomeFragment : Fragment() {
 
             val storageRef =
                 FirebaseStorage.getInstance().reference.child("Images/${UUID.randomUUID()}.jpg")
-
             storageRef.putFile(imageUri)
                 .addOnSuccessListener {
 
@@ -266,19 +275,20 @@ class HomeFragment : Fragment() {
 
     private fun saveDownloadUrlToFirestore(downloadUrl: String) {
         // Create a new document reference to ensure a custom ID is used
-        val documentReference = firestore.collection("images").document()
+        val documentReference = sessionClass.getUId()
+            ?.let { firestore.collection("images").document(it).collection("items").document() }
 
         // Set the custom Id using the document ID from Firestore or a predefined value
         val model = categoryModel(
             name = downloadUrl,
-            Id = documentReference.id, // Assigning the Firestore document ID to the model
+            Id = documentReference!!.id, // Assigning the Firestore document ID to the model
             addname = inputtext.text.toString(),
             quantity = fulltext,
             quantityname = fulltextlit
         )
 
 
-        documentReference.set(model)
+        documentReference!!.set(model)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     showToast("Successfully Added")
@@ -289,35 +299,68 @@ class HomeFragment : Fragment() {
             }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setUpSearchView() {
+
+        binding.searchView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                val query = s.toString().trim()
+
+                if (query.isNotEmpty()) {
+                    list.filter { model ->
+                        model.addname!!.contains(query, ignoreCase = true)
+                    }.let {
+                        list.clear()
+                        list.addAll(it)
+                    }
+                } else {
+                    loadImagesFromFirestore()
+                }
+
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+
+
 
     @SuppressLint("NotifyDataSetChanged")
     private fun loadImagesFromFirestore() {
         list.clear()
-        firestore.collection("images").orderBy("timestamp", Direction.DESCENDING).get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val documents = task.result?.documents
-                    liveData.value?.clear()
-                    documents?.forEach { document ->
-                        val model = document.toObject(categoryModel::class.java)
-                        model?.Id = document.id
-                        if (model != null) {
-                            list.add(model).also {
-                                liveData.postValue(list)
+        sessionClass.getUId()?.let {
+            firestore.collection("images").document(it).collection("items")
+                .orderBy("timestamp", Direction.DESCENDING).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val documents = task.result?.documents
+                        liveData.value?.clear()
+                        documents?.forEach { document ->
+                            val model = document.toObject(categoryModel::class.java)
+                            model?.Id = document.id
+                            if (model != null) {
+                                list.add(model).also {
+                                    liveData.postValue(list)
+                                }
                             }
+                        }.also {
+                            adapter.notifyDataSetChanged()
                         }
-                    }.also {
-                        adapter.notifyDataSetChanged()
                     }
+                }.addOnFailureListener { error ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed to load images: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
                 }
-            }.addOnFailureListener { error ->
-                Toast.makeText(
-                    requireContext(),
-                    "Failed to load images: ${error.message}",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
+        }
     }
 
     private fun uploadImageToFirebaseStorage(imageUri: Uri) {
@@ -453,7 +496,6 @@ class HomeFragment : Fragment() {
             if (ischecked) {
                 inputtext2.hint = "Enter kg"
                 whichChecked = "Kg"
-
             } else {
                 inputtext2.hint = "Enter Liter"
             }
@@ -483,7 +525,6 @@ class HomeFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
 
             alertdailgue.dismiss()
         }
@@ -602,19 +643,7 @@ class HomeFragment : Fragment() {
         alertdailgue.show()
     }
 
-    private val listener = object : PermissionListener {
-        override fun onPermissionGranted(response: PermissionGrantedResponse) {
 
-        }
-
-        override fun onPermissionDenied(response: PermissionDeniedResponse) {}
-
-        override fun onPermissionRationaleShouldBeShown(
-            p0: PermissionRequest?,
-            p1: PermissionToken?
-        ) {
-        }
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun loadRecipeNameOnFireStore() {
@@ -674,7 +703,7 @@ class HomeFragment : Fragment() {
     private fun notification(name: String?, quantity: String?) {
         val channelId = "Grocery_Management_App"
         val notificationId = System.currentTimeMillis().toInt()
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "GroceryManagementApp"
             val descriptiveText = "Notification For grocery item"
             val importance = NotificationManager.IMPORTANCE_DEFAULT

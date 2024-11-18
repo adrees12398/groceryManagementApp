@@ -1,4 +1,4 @@
-package com.example.grocessarymanagmentapp
+package com.example.grocery
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate

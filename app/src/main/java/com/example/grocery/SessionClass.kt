@@ -1,4 +1,4 @@
-package com.example.grocessarymanagmentapp
+package com.example.grocery
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -18,6 +18,18 @@ class SessionClass(var context: Context) {
     }
     fun setUser(value: String) {
         pref.edit().putString("user", value).apply()
+    }
+    fun getName(): String? {
+        return pref.getString("name", "")
+    }
+    fun setName(value: String) {
+        pref.edit().putString("name", value).apply()
+    }
+    fun getUId():String?{
+        return pref.getString("UId","")
+    }
+    fun setUId(value:String){
+        pref.edit().putString("UId",value).apply()
     }
 
     fun setvalue(ischecked: Boolean){

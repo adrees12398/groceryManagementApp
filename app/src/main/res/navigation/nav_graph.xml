@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.HomeFragment"
+        android:name="com.example.grocery.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/recipeFragment"
-        android:name="com.example.grocessarymanagmentapp.RecipeFragment"
+        android:name="com.example.grocery.RecipeFragment"
         android:label="fragment_recipe"
         tools:layout="@layout/fragment_recipe" >
         <action
@@ -31,6 +31,6 @@
     </fragment>
     <fragment
         android:id="@+id/helpLineFragment"
-        android:name="com.example.HelpLineFragment"
+        android:name="com.example.grocery.HelpLineFragment"
         android:label="HelpLineFragment" />
 </navigation>

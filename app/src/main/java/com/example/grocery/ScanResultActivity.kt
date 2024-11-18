@@ -1,12 +1,10 @@
-package com.example.grocessarymanagmentapp
+package com.example.grocery
 
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.grocessarymanagmentapp.R
 import com.example.grocessarymanagmentapp.databinding.ActivityScanResultBinding
 
 class ScanResultActivity : AppCompatActivity() {

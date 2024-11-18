@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GrocessaryManagmentApp</string>
+    <string name="app_name">GroceryManagementApp</string>
     <string name="welcome_to"> Welcome To \n
        Grocery Management app\n</string>
     <string name="name">name</string>

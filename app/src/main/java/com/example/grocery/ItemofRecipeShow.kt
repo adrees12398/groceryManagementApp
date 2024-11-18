@@ -1,4 +1,4 @@
-package com.example.grocessarymanagmentapp
+package com.example.grocery
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -17,6 +17,7 @@ import com.google.firebase.firestore.Query.Direction
 class ItemofRecipeShow : AppCompatActivity() {
     lateinit var binding: ActivityItemofRecipeShowBinding
     private lateinit var adapter: RecipeAdapter
+    private lateinit var sessionClass: SessionClass
     private var list = ArrayList<categoryModel>()
     lateinit var firestore: FirebaseFirestore
     private var item: ArrayList<categoryModel> = ArrayList()
@@ -28,7 +29,7 @@ class ItemofRecipeShow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityItemofRecipeShowBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+            sessionClass = SessionClass(this)
         firestore = FirebaseFirestore.getInstance()
 
         binding.recyclerRecipe.setHasFixedSize(true)
@@ -139,7 +140,7 @@ class ItemofRecipeShow : AppCompatActivity() {
                     binding.addName.setText("")
 
                     list.forEach { itemSelect ->
-                        recipeDocument.collection("items").document().set(itemSelect)
+                        recipeDocument.collection("item").document().set(itemSelect)
                             .addOnCompleteListener { taskitems ->
                                 if (taskitems.isSuccessful) {
                                     Toast.makeText(this, "items add to recipe", Toast.LENGTH_SHORT)
@@ -173,24 +174,26 @@ class ItemofRecipeShow : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun loaddatafromfirestore() {
-        firestore.collection("images").orderBy("timestamp", Direction.DESCENDING).get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val documents = task.result?.documents
-                    documents?.forEach { document ->
-                        val model = document.toObject(categoryModel::class.java)
-                        model?.Id = document.id
-                        if (model != null) {
-                            model.itemQuanity = 0
-                            list.add(model)
+        sessionClass.getUId()?.let {
+            firestore.collection("images").document(it).collection("items") .orderBy("timestamp", Direction.DESCENDING).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val documents = task.result?.documents
+                        documents?.forEach { document ->
+                            val model = document.toObject(categoryModel::class.java)
+                            model?.Id = document.id
+                            if (model != null) {
+                                model.itemQuanity = 0
+                                list.add(model)
+                            }
+                        }.also {
+                            adapter.notifyDataSetChanged()
                         }
-                    }.also {
-                        adapter.notifyDataSetChanged()
                     }
-                }
 
-            }.addOnFailureListener {
-                Toast.makeText(this, "failure", Toast.LENGTH_SHORT).show()
-            }
+                }.addOnFailureListener {
+                    Toast.makeText(this, "failure", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 }
